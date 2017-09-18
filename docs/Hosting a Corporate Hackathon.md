@@ -143,4 +143,5 @@ Finally, it is important to have a meeting with the sponsor and stakeholders to 
 Hosting a hackathon can be a time-consuming endeavor. However, with the right planning and support, the impact can be tremendous. These events can help identify associates and ideas across the company who have the skills needed to solve some of the organization's largest business problems. Winning solutions for one area of the business often come from a completely different business group. Such opportunities to connect teams and channel new perspectives are what make hackathons such valuable tools for innovation and collaboration.
 
 **This paper was written by Sarvenaz Laussermair**
+
 [Contact Sarvenaz on LinkedIn](https://www.linkedin.com/in/sarvenaz/)
