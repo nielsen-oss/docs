@@ -8,4 +8,4 @@ Nielsen.
 ## Table Of Contents
 
 1. [Hosting a Corporate Hackathon](docs/Hosting%20a%20Corporate%20Hackathon.md)
-2. [Jest Style Guide](docs/Jest%20a%Style%Guide.md)
+2. [Jest Style Guide](/javascript/testing)
