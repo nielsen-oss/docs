@@ -7,7 +7,7 @@ Nielsen.
 
 ## Table Of Contents
 
-###JavaScript
+### JavaScript
 * [Testing Style Guide](/javascript/testing)
 
 ### General
