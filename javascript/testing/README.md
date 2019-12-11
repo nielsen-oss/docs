@@ -16,6 +16,9 @@ This is the Nielsen Marketing Cloud Engineering team's style guide on web front-
       1. [Redux Connected Component](#redux-connected-component)
 	- [Custom Hooks](#custom-hooks)
 	- [Proper use of `Date`](#proper-use-of-date)
+	- [Using Mocks and Spies](#using-mocks-and-spies)
+        1. [Mocking functions](#mocking-functions)
+        1. [Mocking modules](#mocking-modules) 
 	- [Find us](#find-us)
 	- [Contributors](#contributors)
 	- [Amendments](#amendments)
@@ -485,6 +488,67 @@ afterAll(()=> {
 jest.mock('moment', ()=> ({
 	// moment methods that you need
 }))
+```
+
+## Using Mocks and Spies
+Generally, There's a time and a place for mocking. 
+Writing mocks lets you fake a function/module to prevent you from using the real implementation or when testing the real implementation may be complicated and messy.  
+This should be used in some cases:  
+- In integration tests, we don't need the server to respond with real data, we can just mock the module/function call.  
+- When we have services that make actual requests to a 3rd party that may cost money.
+- In unit tests when we just want to see that a callback was called in some scenario.  
+
+Keep in mind that when doing E2E tests we **won't** mock anything since we wish to test the whole app.  
+### Mocking functions
+Sometimes when testing a component that receives a callback, we want to see that this callback was called in some scenarios, for that we have mocks and spies.  
+Creating a mock function in jest is done in a simple command:  
+```javascript
+const mockFn = jest.fn()
+``` 
+
+Example component:  
+```javascript
+const MyInput = ({onChange, value, placeholder}) => {
+    const handleChange = e => {
+        onChange(e.target.value)
+    }
+    return (<input onChange={onChane} value={value} placeholder={placeholder} />)
+}
+```
+
+✅ Do - mock the `onChange` callback:
+``` javascript
+test('onChange called with right arguments', () => {
+    const onChangeMock = jest.fn()
+    const { getByPlaceholder } = render(
+      <MyInput onChange={onChangeMock} value='' placeholder='Search'/>
+    )
+    const domInput = getByPlaceholder('Search')
+    fireEvent.change(domInput, { target: { value: '23' } })
+    excpect(onChangeMock).toBeCalledWith('23')
+})
+```
+
+❌ Don't - use a regular function to see if it was called:
+``` javascript
+test('onChange called with right arguments', () => {
+    let isCalled = false
+    const onChangeHandler = () => { isCalled = true } 
+    const { getByPlaceholder } = render(
+      <MyInput onChange={onChangeHandler} value='' placeholder='Search'/>
+    )
+    const domInput = getByPlaceholder('Search')
+    fireEvent.change(domInput, { target: { value: '23' } })
+    excpect(isCalled).toBeTruthy()
+})
+```
+
+### Mocking Modules
+Mocking modules may be handy in cases where we want to mock a whole module (some logic util or fetch module) 
+
+✅ Do - :
+``` javascript
+
 ```
 
 ## Find us
