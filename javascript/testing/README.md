@@ -19,6 +19,7 @@ This is the Nielsen Marketing Cloud Engineering team's style guide on web front-
 	- [Using Mocks and Spies](#using-mocks-and-spies)
         1. [Mocking functions](#mocking-functions)
         1. [Mocking modules](#mocking-modules) 
+        1. [Spies](#spies)
 	- [Find us](#find-us)
 	- [Contributors](#contributors)
 	- [Amendments](#amendments)
