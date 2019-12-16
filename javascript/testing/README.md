@@ -499,8 +499,10 @@ This should be used in some cases:
 - In unit tests when we just want to see that a callback was called in some scenario.  
 
 Keep in mind that when doing E2E tests we **won't** mock anything since we wish to test the whole app.  
+  
+Spies is a different approach which lets you assert on function calls while still keeping the real implementation.
 ### Mocking functions
-Sometimes when testing a component that receives a callback, we want to see that this callback was called in some scenarios, for that we have mocks and spies.  
+Sometimes when testing a component that receives a callback, we want to see that this callback was called in some scenarios, for that we have mocks.  
 Creating a mock function in jest is done in a simple command:  
 ```javascript
 const mockFn = jest.fn()
@@ -512,7 +514,7 @@ const MyInput = ({onChange, value, placeholder}) => {
     const handleChange = e => {
         onChange(e.target.value)
     }
-    return (<input onChange={onChane} value={value} placeholder={placeholder} />)
+    return (<input onChange={onChange} value={value} placeholder={placeholder} />)
 }
 ```
 
@@ -544,11 +546,27 @@ test('onChange called with right arguments', () => {
 ```
 
 ### Mocking Modules
-Mocking modules may be handy in cases where we want to mock a whole module (some logic util or fetch module) 
+Mocking modules may be handy in cases where we want to mock a whole module (some logic util or fetch module).  
+At the moment we didn't encounter many use cases for this approach, so we don't have any best practices to share.  
+For more information you can take a look at the jest docs [here](https://jestjs.io/docs/en/jest-object#mock-modules)
 
-✅ Do - :
-``` javascript
 
+### Spies
+Creating a spy lets you spy on function calls but keep using the original function implementation.  
+Unlike mock, spy actually calls the function but also keeps track of the calls.
+This is useful when you want to maintain the logic but keep track of arguments sent to a function, the number of calls made etc.  
+Creating and using a Spy in jest is done in this way:
+```javascript
+const translator = {
+    getMessage: key => "I'm the translation",
+    setLanguage: lang => window.language = lang
+}
+
+const messageSpy = jest.spyOn(translator, 'getMessage')
+const returnValue = translator.getMessage('test')
+
+expect(messageSpy).toHaveBeenCalled()
+expect(returnValue).toEqual("I'm the translation")
 ```
 
 ## Find us
