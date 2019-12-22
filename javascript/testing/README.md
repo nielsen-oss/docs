@@ -16,6 +16,10 @@ This is the Nielsen Marketing Cloud Engineering team's style guide on web front-
       1. [Redux Connected Component](#redux-connected-component)
 	- [Custom Hooks](#custom-hooks)
 	- [Proper use of `Date`](#proper-use-of-date)
+	- [Using Mocks and Spies](#using-mocks-and-spies)
+        1. [Mocking functions](#mocking-functions)
+        1. [Mocking modules](#mocking-modules) 
+        1. [Spies](#spies)
 	- [Find us](#find-us)
 	- [Contributors](#contributors)
 	- [Amendments](#amendments)
@@ -485,6 +489,85 @@ afterAll(()=> {
 jest.mock('moment', ()=> ({
 	// moment methods that you need
 }))
+```
+
+## Using Mocks and Spies
+Generally, There's a time and a place for mocking. 
+Writing mocks lets you fake a function/module to prevent you from using the real implementation or when testing the real implementation may be complicated and messy.  
+This should be used in some cases:  
+- In integration tests, we don't need the server to respond with real data, we can just mock the module/function call.  
+- When we have services that make actual requests to a 3rd party that may cost money.
+- In unit tests when we just want to see that a callback was called in some scenario.  
+
+Keep in mind that when doing E2E tests we **won't** mock anything since we wish to test the whole app.  
+  
+Spies is a different approach which lets you assert on function calls while still keeping the real implementation.
+### Mocking functions
+Sometimes when testing a component that receives a callback, we want to see that this callback was called in some scenarios, for that we have mocks.  
+Creating a mock function in jest is done in a simple command:  
+```javascript
+const mockFn = jest.fn()
+``` 
+
+Example component:  
+```javascript
+const MyInput = ({onChange, value, placeholder}) => {
+    const handleChange = e => {
+        onChange(e.target.value)
+    }
+    return (<input onChange={onChange} value={value} placeholder={placeholder} />)
+}
+```
+
+✅ Do - mock the `onChange` callback:
+``` javascript
+test('onChange called with right arguments', () => {
+    const onChangeMock = jest.fn()
+    const { getByPlaceholder } = render(
+      <MyInput onChange={onChangeMock} value='' placeholder='Search'/>
+    )
+    const domInput = getByPlaceholder('Search')
+    fireEvent.change(domInput, { target: { value: '23' } })
+    excpect(onChangeMock).toBeCalledWith('23')
+})
+```
+
+❌ Don't - use a regular function to see if it was called:
+``` javascript
+test('onChange called with right arguments', () => {
+    let isCalled = false
+    const onChangeHandler = () => { isCalled = true } 
+    const { getByPlaceholder } = render(
+      <MyInput onChange={onChangeHandler} value='' placeholder='Search'/>
+    )
+    const domInput = getByPlaceholder('Search')
+    fireEvent.change(domInput, { target: { value: '23' } })
+    excpect(isCalled).toBeTruthy()
+})
+```
+
+### Mocking Modules
+Mocking modules may be handy in cases where we want to mock a whole module (some logic util or fetch module).  
+At the moment we didn't encounter many use cases for this approach, so we don't have any best practices to share.  
+For more information you can take a look at the jest docs [here](https://jestjs.io/docs/en/jest-object#mock-modules)
+
+
+### Spies
+Creating a spy lets you spy on function calls but keep using the original function implementation.  
+Unlike mock, spy actually calls the function but also keeps track of the calls.
+This is useful when you want to maintain the logic but keep track of arguments sent to a function, the number of calls made etc.  
+Creating and using a Spy in jest is done in this way:
+```javascript
+const translator = {
+    getMessage: key => "I'm the translation",
+    setLanguage: lang => window.language = lang
+}
+
+const messageSpy = jest.spyOn(translator, 'getMessage')
+const returnValue = translator.getMessage('test')
+
+expect(messageSpy).toHaveBeenCalled()
+expect(returnValue).toEqual("I'm the translation")
 ```
 
 ## Find us
