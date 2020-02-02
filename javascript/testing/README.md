@@ -492,7 +492,7 @@ jest.mock('moment', ()=> ({
 ```
 
 ## End-to-end Testing
-> For End-to-end testing we use [Cypress](https://www.cypress.io/) Framework. However, our suggested concepts could be adopted  with other End-to-End frameworks/test runners. 
+> For End-to-end testing we use [Cypress](https://www.cypress.io/) Framework. However, our suggested concepts could be adopted with other End-to-End frameworks/test runners. 
 
 The below diagram illustrates main blocks that involved in End-to-end test. 
 
@@ -522,7 +522,7 @@ it('should search data correctly', () => {
    - Provides an atomic API for interaction with tested application page. This API is used by `Test` 
    - Has no assertions
    - Can use another Page Object, it depends on the hierarchical structure of application pages 
-   - Can optionally an use *`Selectors`* module, that contains reusable css selectors definitions
+   - Can optionally use *`Selectors`* module, that contains reusable css selectors definitions
    - Complex shared components should expose Page Objects for other consumers
 
 Example:    
