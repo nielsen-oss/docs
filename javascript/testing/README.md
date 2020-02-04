@@ -494,38 +494,21 @@ jest.mock('moment', ()=> ({
 ## End-to-end Testing
 > For End-to-end testing we use [Cypress](https://www.cypress.io/) Framework. However, our suggested concepts could be adopted with other End-to-End frameworks/test runners. 
 
-The below diagram illustrates main blocks that involved in End-to-end test. 
+The below diagram illustrates main blocks that involved in End-to-end test: [Test](#test), [Page Object](#page-object), [Flow](#flow)
 
 ![End-to-end Test diagram](./resources/e2eDiagram.png)
-
-- **Test** 
-    - Uses the [AAA pattern](#aaa-pattern---arrange-act-assert)
-    - One and only one unit that __has assertions__ for testing components' integration and data integrity 
-    - Uses one or more `Page Objects` to access and interact with tested application page
-    
-Here is a simple example of test that checks search data functionality:    
-
-``` javascript
-import TestPageObject from './TestPageObject'
-const testPageObject =  new TestPageObject()
-
-it('should search data correctly', () => {
-  
-  testPageObject.typeSearchTerm('searchTerm')
-  
-  testPageObject.getSearchResults().should('contain', 'searchTerm')
-})
-```
    
-- **Page Object** 
-   - Responsible to encapsulate technical details (like css selectors, data attributes, etc`) to access the elements of the tested application page
-   - Provides an atomic API for interaction with tested application page. This API is used by `Test` 
+##### Page Object
+
+   - Responsible to encapsulate technical details (like css selectors, data attributes, etc`) to access and manipulate the elements of the tested application page
+   - Provides an API for atomic interaction with the tested application page. This API is used by [Test](#test) 
    - Has no assertions
    - Can use another Page Object, it depends on the hierarchical structure of application pages 
    - Can optionally use *`Selectors`* module, that contains reusable css selectors definitions
    - Complex shared components should expose Page Objects for other consumers
+   - You can refer [this article](https://martinfowler.com/bliki/PageObject.html) for more information about Page Object
 
-Example:    
+Example of Page Object:    
 ``` javascript
 class TestPageObject {
   
@@ -542,12 +525,31 @@ class TestPageObject {
   }
 }
 ```
-- **Flow**
+##### Flow
    - Common reusable logic that can be shared between tests (i.e login flow)
-   - Uses one or more Page Objects under the hood
+   - Uses one or more [Page Objects](#page-object) under the hood
    - Has no assertions
   
-   
+##### Test
+
+  - Uses the [AAA pattern](#aaa-pattern---arrange-act-assert)
+  - One and only one unit that __has assertions__ for testing components' integration and data integrity 
+  - Uses one or more [Page Objects](#page-object) to access and interact with tested application page
+  - Uses one or more [Flows](#flow) to implement ["Act"](#aaa-pattern---arrange-act-assert) part of the test
+    
+Here is a simple example of test that checks search data functionality and uses 'TestPageObject':    
+
+``` javascript
+import TestPageObject from './TestPageObject'
+const testPageObject =  new TestPageObject()
+
+it('should search data correctly', () => {
+  
+  testPageObject.typeSearchTerm('searchTerm')
+  
+  testPageObject.getSearchResults().should('contain', 'searchTerm')
+})
+``` 
 
 
 ## Find us
