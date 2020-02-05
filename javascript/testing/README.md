@@ -1,21 +1,23 @@
 # Nielsen Testing Style Guide
 
 This is the Nielsen Marketing Cloud Engineering team's style guide on web front-end testing.
-> **Note**: The examples in this guide are using the [React](https://reactjs.org/) user interface library, in combination with [Jest](https://jestjs.io/) testing framework. We will share our opinions on different libraries for testing `React` components (Like [react-testing-library](https://github.com/testing-library/react-testing-library) which we also use for examples). However, we believe that our suggested approach could be well used with other frameworks/libraries with some slight adjustments
+> **Note**: The examples in this guide are using the [React](https://reactjs.org/) user interface library, in combination with [Jest](https://jestjs.io/) testing framework. We will share our opinions on different libraries for testing `React` components (Like [react-testing-library](https://github.com/testing-library/react-testing-library) which we also use for examples). For End-to-end testing we use [Cypress](https://www.cypress.io/). However, we believe that our suggested approach could be well used with other frameworks/libraries with some slight adjustments
 
 ## Table of Contents
 
-- [Nielsen Jest Style Guide](#nielsen-jest-style-guide)
+- [Nielsen Testing Style Guide](#nielsen-testing-style-guide)
 	- [Basic Rules](#basic-rules)
       1. [AAA Pattern - Arrange Act Assert](#aaa-pattern---arrange-act-assert)
       1. [Act in React](#act-in-react)
       1. [Async side effects in react](#async-side-effects-in-react)
-	- [React Component](#react-component)
-      1. [Hooks Component](#hooks-component)
-      1. [Class Component](#class-component)
-      1. [Redux Connected Component](#redux-connected-component)
-	- [Custom Hooks](#custom-hooks)
-	- [Proper use of `Date`](#proper-use-of-date)
+	- [Unit Testing](#unit-testing)
+        - [React Component](#react-component)
+          1. [Hooks Component](#hooks-component)
+          1. [Class Component](#class-component)
+          1. [Redux Connected Component](#redux-connected-component)
+        - [Custom Hooks](#custom-hooks)
+        - [Proper use of `Date`](#proper-use-of-date)
+    - [End-to-end Testing](#end-to-end-testing)  
 	- [Find us](#find-us)
 	- [Contributors](#contributors)
 	- [Amendments](#amendments)
@@ -160,7 +162,9 @@ test("should render 1", () => {
 });
 ```
 
-## React Component
+## Unit Testing
+
+### React Component
 We strongly encourage testing components' behavior rather than testing their implementation details. What does it mean? Generally, testing the behavior means making assertions about the outcome of a desired action, rather than asserting about the way the component achieved this outcome internally.
 
 This means we can rewrite/refactor a component implementation and have its tests remain the same and not break.
@@ -168,7 +172,7 @@ If the test is tied to the way the component is implemented (e.g. by calling an 
 
 >**Note**: Using `React Testing Library` helps us avoid writing implementation details tests, as opposed to `Enzyme` where it's much easier to test implementation details unintentionally.
 
-### Hooks Component
+#### Hooks Component
 
 React hooks components are great to show why behavior testing is the way to go. The reason for it is that until lately we were used to only write class components, which are easy to test using implementation details tests.
 This testing pattern will need change drastically in order to fit new functional components using hooks.
@@ -235,7 +239,7 @@ test('Shows the correct amount of clicks', () => {
 This above "Don't" example uses Enzyme's `shallow()` and `wrapper.instance()`. It asserts about the 'count' prop in the state which is an implementation detail.
 This test passes when we render `<ClickCounterClass />`, but it fails when we change it to render `<ClickCounterHooks />`
 
-### Class Component
+#### Class Component
 
 When testing the async functionality of a `Class Component`, we want to ensure that our side effect finished running before asserting.
 This is important because we should only assert after we are sure all changes to the DOM were made.
@@ -357,7 +361,7 @@ test('login - implementation details', async () => {
 })
 ```
 
-### Redux Connected Component
+#### Redux Connected Component
 
 When testing the integration between a `Connected Component` and its `React Component`, we want to ensure that any change in the `React Component` interface (i.e. props) will cause the tests to fail.
 The idea is to create a small compatability test between a `React Component` and `Connected Component` (which connects it with redux).
@@ -419,7 +423,7 @@ describe('redux connected component unit-test', () => {
 })
 ```
 
-## Custom Hooks
+### Custom Hooks
 
 Sometimes, we need to create custom hooks that encapsulate relevant logic for multiple developers on our team.
 
@@ -459,7 +463,7 @@ test('should toggle state on off', () => {
 ```
 Don't forget to wrap every interaction with `act`, so after the interaction finishes, you'll get the updated value!
 
-## Proper use of `Date`
+### Proper use of `Date`
 
 We want to mock the `Date` object itself, this way we know for sure that we will get the exact result for the given date any time. In addition, we ensure that our current timestamp will always return the same result instead of creating a new timestamp every test, which could lead to false negatives.
 
@@ -487,6 +491,67 @@ jest.mock('moment', ()=> ({
 }))
 ```
 
+## End-to-end Testing
+> For End-to-end testing we use [Cypress](https://www.cypress.io/) Framework. However, our suggested concepts could be adopted with other End-to-End frameworks/test runners. 
+
+The below diagram illustrates main blocks that involved in End-to-end test: [Test](#test), [Page Object](#page-object), [Flow](#flow)
+
+![End-to-end Test diagram](./resources/e2eDiagram.png)
+   
+##### Page Object
+
+   - Responsible to encapsulate technical details (like css selectors, data attributes, etc`) to access and manipulate the elements of the tested application page
+   - Provides an API for atomic interaction with the tested application page. This API is used by [Test](#test) 
+   - Has no assertions
+   - Can use another Page Object, it depends on the hierarchical structure of application pages 
+   - Can optionally use *`Selectors`* module, that contains reusable css selectors definitions
+   - Complex shared components should expose Page Objects for other consumers
+   - You can refer [this article](https://martinfowler.com/bliki/PageObject.html) for more information about Page Object
+
+Example of Page Object:    
+``` javascript
+class TestPageObject {
+  
+  getSearchInput () {
+    return cy.get('[data-test-id="search-input"]')
+  }
+
+  typeSearchTerm (searchTerm) {
+    this.getSearchInput().type(searchTerm)
+  }
+  
+  getSearchResults () {
+    return cy.get('[data-test-id="search-results-table"]')
+  }
+}
+```
+##### Flow
+   - Common reusable logic that can be shared between tests (i.e login flow)
+   - Uses one or more [Page Objects](#page-object) under the hood
+   - Has no assertions
+  
+##### Test
+
+  - Uses the [AAA pattern](#aaa-pattern---arrange-act-assert)
+  - One and only one unit that __has assertions__ for testing components' integration and data integrity 
+  - Uses one or more [Page Objects](#page-object) to access and interact with tested application page
+  - Uses one or more [Flows](#flow) to implement ["Act"](#aaa-pattern---arrange-act-assert) part of the test
+    
+Here is a simple example of test that checks search data functionality and uses 'TestPageObject':    
+
+``` javascript
+import TestPageObject from './TestPageObject'
+const testPageObject =  new TestPageObject()
+
+it('should search data correctly', () => {
+  
+  testPageObject.typeSearchTerm('searchTerm')
+  
+  testPageObject.getSearchResults().should('contain', 'searchTerm')
+})
+``` 
+
+
 ## Find us
 
   - We have a Tech Blog! You can find it at [Medium](https://medium.com/nmc-techblog).
@@ -505,4 +570,5 @@ Feel free to submit pull requests and contribute to this style guide!
 
 Copyright (c) 2020 Nielsen
 
-**[⬆ back to top](#nielsen-jest-style-guide)**
+**[⬆ back to top](#nielsen-testing-style-guide)**
+
