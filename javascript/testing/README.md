@@ -174,7 +174,7 @@ If the test is tied to the way the component is implemented (e.g. by calling an 
 
 #### Hooks Component
 
-React hooks components are great to show why behavior testing is the way to go. The reason for it is that until lately we were used to only write class components, which are easy to test using implementation details tests.
+React hooks components are great to show why behavior testing is the way to go. Prior to hooks, we were used to writing class components, which are easy to test using implementation details tests.
 This testing pattern will need change drastically in order to fit new functional components using hooks.
 
 The following example demonstrates exactly how implementation details tests break easily, while behavior tests continue working even after the switch to React hooks.
@@ -226,7 +226,7 @@ test('shows the correct amount of clicks', () => {
 ```
 The above test will pass both if we render `<ClickCounterClass />` or if we render `<ClickCounterHooks />`
 
-❌ Don't - Make assertions about details in the component's implemantation. They will eventually change and will wrongly cause the test to fail:
+❌ Don't - Make assertions about details in the component's implementation. They will eventually change and will wrongly cause the test to fail:
 ```javascript
 test('Shows the correct amount of clicks', () => {
   const wrapper = shallow(<ClickCounterClass />)
@@ -243,7 +243,7 @@ This test passes when we render `<ClickCounterClass />`, but it fails when we ch
 
 When testing the async functionality of a `Class Component`, we want to ensure that our side effect finished running before asserting.
 This is important because we should only assert after we are sure all changes to the DOM were made.
-We should also focus on testing the component functionality instead of testing it's implementation details. That way our tests are maintainable and insure, with high confidence, that are components behave as they should.
+We should also focus on testing the component functionality instead of testing it's implementation details. That way our tests are maintainable and ensure, with high confidence, that are components behave as they should.
 
 Example Login component:
 ```javascript
@@ -364,7 +364,7 @@ test('login - implementation details', async () => {
 #### Redux Connected Component
 
 When testing the integration between a `Connected Component` and its `React Component`, we want to ensure that any change in the `React Component` interface (i.e. props) will cause the tests to fail.
-The idea is to create a small compatability test between a `React Component` and `Connected Component` (which connects it with redux).
+The idea is to create a small compatibility test between a `React Component` and `Connected Component` (which connects it with redux).
 
 We want to avoid testing `mapStateToProps`/`mapDispatchToProps` isolated! In this case your test will pass even if the `React Component` props have changed.
 
