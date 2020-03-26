@@ -205,7 +205,7 @@ And here is a functional component that does the same thing using the `useState`
 export const ClickCounterHooks = () => {
   const [count, setCount] = useState(0)
 
-  const handleButtonClick = () => this.setState(({count}) => ({count: count + 1}))
+  const handleButtonClick = () => setCount(count => count + 1)
 
   return (
     <div>
