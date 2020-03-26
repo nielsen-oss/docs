@@ -424,12 +424,11 @@ describe('redux connected component unit-test', () => {
 ```
 
 ### Custom Hooks
+In order to test [Custom Hooks](https://reactjs.org/docs/hooks-custom.html) we need to separate them into two types: Internal custom hook and Shared custom hook.
 
-Sometimes, we need to create custom hooks that encapsulate relevant logic for multiple developers on our team.
-
-If these hooks can be easily tested by testing a component that uses them, we prefer doing that, in order to keep with the behavioral testing approach.
-If that's not the case, we encounter a problem where a hook can only be called inside the body of a functional component.
-To test these cases, we use [react-hooks-testing-library](https://react-hooks-testing-library.com/)
+- Internal custom hook: Following the behavioral testing approach talked in [React Component](#react-component), we suggest testing a custom hook as part of the component which uses it.  
+  
+- Shared custom hooks: In Nielsen we sometimes create custom hooks to be used across the group, in that case we would want to test the encapsulation of logic since they are not tied to any specific component. When this happens we encounter a problem since a hook can only be called inside of a functional component. To overcome this, we suggest using   [react-hooks-testing-library](https://react-hooks-testing-library.com/)
 
 Lets take a `useToggle` hook example:
 ```javascript
