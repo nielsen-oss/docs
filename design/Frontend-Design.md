@@ -20,7 +20,7 @@ Give meaningful names to variables
 5. Split your components to container and presentational components
 6. Folderize Your Components
 
-#### DTY
+#### DRY
 DRY is an acronym that stands for "Don’t Repeat Yourself."
 If you find yourself writing the same code in different places, consider writing it only once and just reuse it, whether as a function or as a component.
 
