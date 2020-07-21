@@ -1,4 +1,4 @@
-# Nielsen Testing Style Guide
+![Nielsen Testing Style Guide](./resources/logo.png)
 
 This is the Nielsen Marketing Cloud Engineering team's style guide on web front-end testing.
 > **Note**: The examples in this guide are using the [React](https://reactjs.org/) user interface library, in combination with [Jest](https://jestjs.io/) testing framework. We will share our opinions on different libraries for testing `React` components (Like [react-testing-library](https://github.com/testing-library/react-testing-library) which we also use for examples). For End-to-end testing we use [Cypress](https://www.cypress.io/). However, we believe that our suggested approach could be well used with other frameworks/libraries with some slight adjustments
@@ -175,7 +175,7 @@ If the test is tied to the way the component is implemented (e.g. by calling an 
 #### Hooks Component
 
 React hooks components are great to show why behavior testing is the way to go. The reason for it is that until lately we were used to only write class components, which are easy to test using implementation details tests.
-This testing pattern will need change drastically in order to fit new functional components using hooks.
+This testing pattern will need to change drastically in order to fit new functional components using hooks.
 
 The following example demonstrates exactly how implementation details tests break easily, while behavior tests continue working even after the switch to React hooks.
 
@@ -185,11 +185,14 @@ export class ClickCounterClass extends React.Component {
     state = {
       count: 0
     }
+
+    handleButtonClick = () => this.setState(({count}) => ({count: count + 1}))
+
     render() {
       return (
         <div>
           <p data-testid='counter-value'>{this.state.count}</p>
-          <button data-testid='counter-button' onClick={() => this.setState(({count}) => ({count: count + 1}))}>
+          <button data-testid='counter-button' onClick={this.handleButtonClick}>
             Click me
           </button>
         </div>
@@ -201,10 +204,13 @@ And here is a functional component that does the same thing using the `useState`
 ```javascript
 export const ClickCounterHooks = () => {
   const [count, setCount] = useState(0)
+
+  const handleButtonClick = () => setCount(count => count + 1)
+
   return (
     <div>
       <p data-testid='counter-value'>{count}</p>
-      <button data-testid='counter-button' onClick={() => setCount(count => count + 1)}>
+      <button data-testid='counter-button' onClick={handleButtonClick}>
           Click Me
       </button>
     </div>
@@ -216,8 +222,7 @@ And now, lets test the outcome of clicking the button:
 ✅ Do - Test the behavior. Make an assertion about the actual DOM element that we expect to change as a result of the click:
 ```javascript
 test('shows the correct amount of clicks', () => {
-  const testMessage = 'Test Message'
-  const { queryByText, getByTestId } = render(<ClickCounterClass />)
+  const { getByTestId } = render(<ClickCounterClass />)
   
   fireEvent.click(getByTestId('counter-button'))
   
@@ -226,7 +231,7 @@ test('shows the correct amount of clicks', () => {
 ```
 The above test will pass both if we render `<ClickCounterClass />` or if we render `<ClickCounterHooks />`
 
-❌ Don't - Make assertions about details in the component's implemantation. They will eventually change and will wrongly cause the test to fail:
+❌ Don't - Make assertions about details in the component's implementation. They will eventually change and will wrongly cause the test to fail:
 ```javascript
 test('Shows the correct amount of clicks', () => {
   const wrapper = shallow(<ClickCounterClass />)
@@ -243,7 +248,7 @@ This test passes when we render `<ClickCounterClass />`, but it fails when we ch
 
 When testing the async functionality of a `Class Component`, we want to ensure that our side effect finished running before asserting.
 This is important because we should only assert after we are sure all changes to the DOM were made.
-We should also focus on testing the component functionality instead of testing it's implementation details. That way our tests are maintainable and insure, with high confidence, that are components behave as they should.
+We should also focus on testing the component functionality instead of testing it's implementation details. That way our tests are maintainable and ensure, with high confidence, that are components behave as they should.
 
 Example Login component:
 ```javascript
@@ -424,12 +429,11 @@ describe('redux connected component unit-test', () => {
 ```
 
 ### Custom Hooks
+In order to test [Custom Hooks](https://reactjs.org/docs/hooks-custom.html) we need to separate them into two types: Internal custom hook and Shared custom hook.
 
-Sometimes, we need to create custom hooks that encapsulate relevant logic for multiple developers on our team.
-
-If these hooks can be easily tested by testing a component that uses them, we prefer doing that, in order to keep with the behavioral testing approach.
-If that's not the case, we encounter a problem where a hook can only be called inside the body of a functional component.
-To test these cases, we use [react-hooks-testing-library](https://react-hooks-testing-library.com/)
+- Internal custom hook: Following the behavioral testing approach talked in [React Component](#react-component), we suggest testing a custom hook as part of the component which uses it.  
+  
+- Shared custom hooks: In Nielsen we sometimes create custom hooks to be used across the group, in that case we would want to test the encapsulation of logic since they are not tied to any specific component. When this happens we encounter a problem since a hook can only be called inside of a functional component. To overcome this, we suggest using   [react-hooks-testing-library](https://react-hooks-testing-library.com/)
 
 Lets take a `useToggle` hook example:
 ```javascript
