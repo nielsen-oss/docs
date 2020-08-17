@@ -480,7 +480,7 @@ jest.mock('moment', ()=> ({
 
 The below diagram illustrates main blocks that involved in End-to-end test: [Test](#test), [Page Object](#page-object), [Flow](#flow)
 
-![End-to-end Test diagram](./resources/e2eDiagram.png)
+![End-to-end Test diagram](../static/img/e2eDiagram.png)
    
 ##### Page Object
 
