@@ -3,7 +3,7 @@ id: testing-style-guide
 title: Nielsen Testing style guide
 sidebar_label: Testing style guide
 ---
-
+![Nielsen Testing Style Guide](../static/img/logo.png)
 This is the Nielsen Marketing Cloud Engineering team's style guide on web front-end testing.
 > **Note**: The examples in this guide are using the [React](https://reactjs.org/) user interface library, in combination with [Jest](https://jestjs.io/) testing framework. We will share our opinions on different libraries for testing `React` components (Like [react-testing-library](https://github.com/testing-library/react-testing-library) which we also use for examples). For End-to-end testing we use [Cypress](https://www.cypress.io/). However, we believe that our suggested approach could be well used with other frameworks/libraries with some slight adjustments
 
