@@ -69,7 +69,6 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          showReadingTime: true,
           // It is recommended to set document id as docs home page (`docs/` path).
           homePageId: 'high-level-design-fe',
           sidebarPath: require.resolve('./sidebars.js'),
