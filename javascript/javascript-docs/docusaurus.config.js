@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'Nielsen OSS',
+  tagline: 'Docs',
+  url: 'https://nielsen-docs.netlify.app',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'nielsen',
+  projectName: 'nielsen-oss',
   themeConfig: {
     navbar: {
       title: 'Nielsen OSS',
