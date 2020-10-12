@@ -63,7 +63,7 @@ TBD
 
 ## Where should the business logic reside?
 
-Most of our application uses Redux, therefor this section will focus on where to locate logic using redux.
+Most of our applications use Redux, therefor this section will focus on where to locate logic using redux.
 In redux there are actions and reducers. A reducer is a pure function which returns the same value for a specific input and has no side effects.
 We also use Selectors ([reselect](https://github.com/reduxjs/reselect)) to fetch data from the store.
 In a react redux application, the data should be kept on the store.
