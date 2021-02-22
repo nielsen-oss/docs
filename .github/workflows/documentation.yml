@@ -61,5 +61,5 @@ jobs:
           else
           npm i
           fi
-          cd javascript/javascripts-docs
+          ls -la
           npx docusaurus deploy
