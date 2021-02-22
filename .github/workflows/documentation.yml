@@ -17,6 +17,7 @@ jobs:
           node-version: '12.x'
       - name: Test Build
         run: |
+          cd javascript/javascripts-docs
           if [ -e yarn.lock ]; then
           yarn install --frozen-lockfile
           elif [ -e package-lock.json ]; then
@@ -24,7 +25,6 @@ jobs:
           else
           npm i
           fi
-          cd javascript/javascripts-docs
           npm run build
   gh-release:
     if: github.event_name != 'pull_request'
@@ -54,6 +54,7 @@ jobs:
         run: |
           git config --global user.email "actions@gihub.com"
           git config --global user.name "gh-actions"
+          cd javascript/javascript-docs
           if [ -e yarn.lock ]; then
           yarn install --frozen-lockfile
           elif [ -e package-lock.json ]; then
@@ -61,6 +62,5 @@ jobs:
           else
           npm i
           fi
-          cd javascript/javascript-docs
           ls -la
           npm run deploy
