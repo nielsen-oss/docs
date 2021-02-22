@@ -63,4 +63,4 @@ jobs:
           fi
           cd javascript/javascript-docs
           ls -la
-          npx docusaurus deploy
+          npm run deploy
