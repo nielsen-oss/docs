@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Nielsen OSS',
   tagline: 'Docs',
-  baseUrl: '/',
+  baseUrl: '/docs/',
   favicon: 'img/favicon.ico',
   organizationName: 'nielsen-oss',
   projectName: 'docs',
