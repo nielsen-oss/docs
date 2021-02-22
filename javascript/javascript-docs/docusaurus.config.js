@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'Nielsen OSS',
+  tagline: 'Docs',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'nielsen-oss',
+  projectName: 'docs',
+  url: 'https://nielsen-oss.github.io/docs/',
   themeConfig: {
     navbar: {
       title: 'Nielsen OSS',
@@ -13,7 +13,7 @@ module.exports = {
         alt: 'Nielsen',
         src: 'img/logo.svg',
       },
-      links: [
+      items: [
         {
           to: 'docs/',
           activeBasePath: 'docs',
@@ -51,10 +51,6 @@ module.exports = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: 'blog',
-            },
-            {
               label: 'GitHub',
               href: 'https://github.com/facebook/docusaurus',
             },
@@ -69,7 +65,6 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          showReadingTime: true,
           // It is recommended to set document id as docs home page (`docs/` path).
           homePageId: 'high-level-design-fe',
           sidebarPath: require.resolve('./sidebars.js'),
