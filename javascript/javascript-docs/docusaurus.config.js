@@ -1,11 +1,11 @@
 module.exports = {
   title: 'Nielsen OSS',
   tagline: 'Docs',
-  url: 'https://nielsen-docs.netlify.app',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
-  organizationName: 'nielsen',
-  projectName: 'nielsen-oss',
+  organizationName: 'nielsen-oss',
+  projectName: 'docs',
+  url: 'https://nielsen-oss.github.io/docs/',
   themeConfig: {
     navbar: {
       title: 'Nielsen OSS',
