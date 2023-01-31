@@ -17,8 +17,7 @@ jobs:
           node-version: '12.x'
       - name: Test Build
         run: |
-          echo $pwd
-          cd ./javascript/javascripts-docs
+          cd javascript/javascript-docs
           if [ -e yarn.lock ]; then
           yarn install --frozen-lockfile
           elif [ -e package-lock.json ]; then
