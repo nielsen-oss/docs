@@ -1,6 +1,7 @@
 ---
 id: high-level-design-fe
 title: High Level Design
+slug: /
 ---
 
 ## Clean Code

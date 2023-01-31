@@ -5,7 +5,7 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'nielsen-oss',
   projectName: 'docs',
-  url: 'https://nielsen-oss.github.io/docs/',
+  url: 'https://nielsen-oss.github.io',
   themeConfig: {
     navbar: {
       title: 'Nielsen OSS',
@@ -65,8 +65,8 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          // It is recommended to set document id as docs home page (`docs/` path).
-          homePageId: 'high-level-design-fe',
+          // // It is recommended to set document id as docs home page (`docs/` path).
+          // homePageId: 'high-level-design-fe',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
