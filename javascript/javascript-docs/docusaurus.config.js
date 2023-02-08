@@ -11,7 +11,7 @@ module.exports = {
       title: 'Nielsen OSS',
       logo: {
         alt: 'Nielsen',
-        src: 'img/logo.svg',
+        src: 'img/new_logo.png',
       },
       items: [
         {
