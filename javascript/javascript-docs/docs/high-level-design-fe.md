@@ -64,11 +64,26 @@ TBD
 
 ## Where should the business logic reside?
 
-TBD
+Most of our applications use Redux, therefor this section will focus on where to locate logic using redux.
+In redux there are actions and reducers. A reducer is a pure function which returns the same value for a specific input and has no side effects.
+We also use Selectors ([reselect](https://github.com/reduxjs/reselect)) to fetch data from the store.
+In a react redux application, the data should be kept on the store.
+We prefer putting as much logic in the reducer rather than the selector/action/event handler who started the operation.
+Having most of the logic located in the reducer lets us easily test that our flow works as expected since the reducer is a pure function.
 
 ## Separation of concerns
 
-TBD
+Let's start by saying what SoC even means:
+"Separation of Concerns (SoC) is a design principle for separating a computer program into distinct sections, such that each section addresses a separate concern" ([Wikipedia](https://en.wikipedia.org/wiki/Separation_of_concerns)).  
+In React we separate our concerns by using a few tools: Redux, Selectors, React Hooks and React Components (Containers vs Presentational Components).  
+1. Redux Manages our data flow and data storage.
+2. Selectors help us fetch data from the store and if needed manipulate it for the presentational layer.
+3. React Hooks encapsulate a shared logic that can be used wherever needed (`useEventListener`, `useOnClickOutside` etc.).
+4. React Components: In here we should distinguish between Containers and Presenetational components.
+   1. Containers - Pull out the data from the store and manage all data process.
+   2. Presenetational Components - Present the data to the user. They are our **view** layer and should manage the UI and interactions with the user.
+
+Following these rules helps us create building blocks that can be shared and re-used everywhere.
 
 ## Compose in Frontend
 
